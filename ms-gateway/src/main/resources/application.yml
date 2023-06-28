@@ -1,0 +1,30 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: ms-gateway
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak-provider:
+            issuer-uri: http://localhost:8081/realms/e-commerce
+
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: ms-bill
+          uri: lb://ms-bill
+          predicates:
+            - Path=/api/v1/**
+          #filters:
+           # - StripPrefix=2
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/users/**
+          #filters:
+           # - StripPrefix=2

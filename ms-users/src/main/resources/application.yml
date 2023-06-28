@@ -1,0 +1,41 @@
+# Server Configuration
+server:
+  port: 8087
+# Spring Configuration
+spring:
+  application:
+    name: ms-users
+  main:
+    allow-circular-references: true
+
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/e-commerce
+            provider-uri: http://localhost:8081/
+        registration:
+          keycloak:
+            authorization-gran-type: client_credentials
+            client-name: keycloak
+            realm: e-commerce
+            clientId: ms-users-client
+            clientSecret: secret
+            scope: openid
+            redirect-uri: http://localhost:8086/login/oauth2/code/keycloak
+  # Eureka Configuration
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+dh:
+  keycloak:
+    serverUrl: http://localhost:8081/
+    realm: e-commerce
+    clientId: ms-users-client
+    clientSecret: secret
