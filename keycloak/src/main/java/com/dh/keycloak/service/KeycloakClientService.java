@@ -69,10 +69,11 @@ public class KeycloakClientService {
         // Creamos el usuario Juan para agregar a Providers
         UserRepresentation userJuan = new UserRepresentation();
         userJuan.setId("juan-id"); // Aquí debes poner un ID único para Juan
-        userJuan.setUsername("Juan");
+        userJuan.setUsername("juan");
         userJuan.setEnabled(true);
         userJuan.setEmail("juan@example.com");
         userJuan.setFirstName("Juan");
+        userJuan.setGroups(List.of("PROVIDERS"));
 
 
         CredentialRepresentation passwordCredJuan = new CredentialRepresentation();
@@ -85,16 +86,17 @@ public class KeycloakClientService {
         realmsResource.realm(reino).users().create(userJuan);
         System.out.println("Usuario Juan creado exitosamente");
 
-        // Obtenemos el grupo Proveedores
+        /* Obtenemos el grupo Proveedores
         GroupRepresentation groupProveedores = realmsResource.realm(reino).groups().groups().stream()
                 .filter(group -> group.getName().equals("PROVIDERS"))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Grupo PROVIDERS no encontrado"));
 
-    // Agregamos a Juan al grupo Proveedores
-        UserResource userJuanResource = realmsResource.realm(reino).users().get(userJuan.getId());
-        userJuanResource.joinGroup(groupProviders.getId());
-        System.out.println("Usuario Juan agregado al grupo PROVIDERS exitosamente");
+        // Agregamos a Juan al grupo Proveedores
+        UserRepresentation userJuanMember = realmsResource.realm(reino).users().get("juan").toRepresentation();
+        GroupResource groupResource = realmsResource.realm(reino).groups().group(groupProveedores.getId());
+        groupResource.members().add(userJuanMember);
+        System.out.println("Usuario Juan agregado al grupo PROVIDERS exitosamente");*/
 
 
 
